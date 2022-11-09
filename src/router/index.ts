@@ -17,9 +17,9 @@ const routes: Array<RouteRecordRaw> = [
 	}
 ]
 
-const router = createRouter({
+const index = createRouter({
 	history: createWebHistory(),
 	routes
 })
 
-export default router
+export default index

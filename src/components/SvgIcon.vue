@@ -1,12 +1,12 @@
 <template>
-  <span class="icon-container">
+  <span class="icon-container" :class="{'active': active}">
     <font-awesome-icon
         :icon="`fa-solid fa-${name}`"
         class="icon"
         :style="{
-        width,
-        height
-      }"
+          width,
+          height
+        }"
     />
   </span>
 </template>
@@ -31,6 +31,9 @@ export default defineComponent({
       type: Number,
       required: true
     },
+    active: {
+      type: Boolean
+    }
   }
 })
 </script>
@@ -59,5 +62,9 @@ export default defineComponent({
     width: 100%;
     z-index: 999;
   }
+}
+
+.active {
+  background: var(--primary-bg-color);
 }
 </style>

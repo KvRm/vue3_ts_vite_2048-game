@@ -1,5 +1,6 @@
 export enum LSKeys {
-	THEME = 'THEME'
+	THEME = 'THEME',
+	GAME_CONTROLLER = 'GAME_CONTROLLER'
 }
 
 export const useLocalStorage = () => {

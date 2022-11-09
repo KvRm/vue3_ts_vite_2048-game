@@ -13,7 +13,7 @@
 <script lang="ts">
 
 import {defineComponent, onMounted} from "vue";
-import {LSKeys, useLocalStorage} from "../composables/localStorage";
+import {LSKeys, useLocalStorage} from "../utils/localStorage";
 import GameContainer from "../components/GameContainer.vue";
 import SvgIcon from '../components/SvgIcon.vue'
 

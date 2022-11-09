@@ -1,6 +1,6 @@
 import {Side} from "../types/Side";
 
-export const getDetectedSideOnSwipe = (
+export const getDetectedSide = (
 	e: MouseEvent | TouchEvent, startPos: { startX: number, startY: number }
 ): Side | null => {
 	const detectDistance: number = 100

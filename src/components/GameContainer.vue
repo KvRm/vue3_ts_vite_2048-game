@@ -2,24 +2,43 @@
   <div class="game">
     <game-header/>
     <game-playground/>
+    <game-controller/>
   </div>
 </template>
 
 <script lang="ts">
 
-import {defineComponent} from "vue";
-import GameHeader from "./GameHeader.vue";
-import GamePlayground from "./GamePlayground.vue";
+import {defineComponent, onMounted} from "vue";
+import GameHeader from "./GameHeader.vue"
+import GamePlayground from "./GamePlayground.vue"
+import GameController from "./GameController.vue"
+import SvgIcon from "./SvgIcon.vue";
+import {useGameControllerStore} from "../stores";
+import {LSKeys, useLocalStorage} from "../utils/localStorage";
+import {Controller} from "../types/Controller";
 
 export default defineComponent({
   name: 'MainView',
   components: {
+    SvgIcon,
     GameHeader,
-    GamePlayground
+    GamePlayground,
+    GameController
   },
 
   setup() {
-    return {}
+    const controllerStore = useGameControllerStore()
+    const ls = useLocalStorage()
+
+    onMounted(() => {
+      if (
+          ls.get(LSKeys.GAME_CONTROLLER) === "mouse" ||
+          ls.get(LSKeys.GAME_CONTROLLER) === "keyboard"
+      ) {
+        const controller = ls.get(LSKeys.GAME_CONTROLLER)
+        controllerStore.setController(controller as Controller)
+      }
+    })
   }
 })
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="playground" ref="playgroundRef">
     <number-component
-        v-for="(item, index) in arr"
+        v-for="(item, index) in cells"
         :key="index"
         :value="item"
     />
@@ -10,9 +10,10 @@
 
 <script lang="ts">
 
-import {defineComponent, onMounted, onUnmounted, ref} from "vue";
+import {computed, defineComponent, onMounted, onUnmounted, ref} from "vue";
 import NumberComponent from "./NumberComponent.vue";
-import {swipe} from "../composables/swipeListener";
+import {swipe} from "../utils/swipeListener";
+import {useCellsStore} from "../stores";
 
 export default defineComponent({
   name: 'MainView',
@@ -21,7 +22,10 @@ export default defineComponent({
   },
 
   setup() {
-    const arr = [2, 4, 8, 16, 32, 64, 128, 512, 1024, 2048, 4096, 8192, 16384, 32768, 0, 32]
+    const store = useCellsStore()
+
+    const cells = computed<number[]>(() => store.getCells)
+    store.setCells([2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
     const playgroundRef = ref<HTMLDivElement | null>(null)
 
@@ -32,7 +36,7 @@ export default defineComponent({
       playgroundRef.value?.addEventListener("touchstart", (e: TouchEvent) =>
           swipe(e, playgroundRef.value as HTMLDivElement)
       )
-      window.addEventListener("keyup", (e: KeyboardEvent) =>
+      window.addEventListener("keydown", (e: KeyboardEvent) =>
           swipe(e, playgroundRef.value as HTMLDivElement)
       )
 
@@ -46,7 +50,7 @@ export default defineComponent({
     })
 
     return {
-      arr,
+      cells,
       playgroundRef
     }
   }
@@ -59,6 +63,7 @@ export default defineComponent({
   grid-template-columns: 1fr 1fr 1fr 1fr;
   width: 484px;
   height: 484px;
+  margin-bottom: 2rem;
   background: var(--second-bg-color);
   border-radius: 10px;
   border: 2px solid var(--primary-font-color);
