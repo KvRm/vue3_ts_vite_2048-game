@@ -61,13 +61,18 @@ export default defineComponent({
 .playground {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  width: 484px;
-  height: 484px;
   margin-bottom: 2rem;
   background: var(--second-bg-color);
   border-radius: 10px;
   border: 2px solid var(--primary-font-color);
   overflow: hidden;
   user-select: none;
+}
+
+@media (max-width: 540px) {
+  .game {
+    width: 344px;
+    height: 344px;
+  }
 }
 </style>

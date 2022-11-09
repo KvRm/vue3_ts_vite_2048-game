@@ -73,6 +73,17 @@ export default defineComponent({
   color: black;
 }
 
+@media (max-width: 540px) {
+  .number-container {
+    width: 85px;
+    height: 85px;
+  }
+  .number {
+    width: 77px;
+    height: 77px;
+  }
+}
+
 .empty {
   background: var(--primary-bg-color);
 }

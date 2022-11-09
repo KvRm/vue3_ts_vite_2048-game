@@ -1,5 +1,5 @@
 <template>
-  <div class="controllers">
+  <div v-if="screenWidth > 540" class="controllers">
     <span @click="setController('keyboard')">
       <svg-icon
           :height="30"
@@ -20,11 +20,12 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from "vue"
+import {computed, defineComponent, onMounted, ref, watch} from "vue"
 import SvgIcon from "./SvgIcon.vue"
 import {useGameControllerStore} from "../stores";
-import {Controller} from "../types/Controller";
+import {Controller} from "../types";
 import {LSKeys, useLocalStorage} from "../utils/localStorage";
+import {useWidth} from "../utils/useWidth";
 
 export default defineComponent({
   name: "RadioButton",
@@ -35,6 +36,11 @@ export default defineComponent({
   setup() {
     const controllerStore = useGameControllerStore()
     const ls = useLocalStorage()
+    const screenWidth = ref<number>(window.innerWidth)
+
+    onMounted(() => useWidth((newWidth: number) => {
+      screenWidth.value = newWidth
+    }))
 
     const controller = computed<Controller>(() => controllerStore.controller)
 
@@ -43,8 +49,14 @@ export default defineComponent({
       ls.set(LSKeys.GAME_CONTROLLER, payload)
     }
 
+    watch(screenWidth, () => {
+      if (screenWidth.value <= 540)
+        controllerStore.setController("mouse")
+    })
+
     return {
       controller,
+      screenWidth,
       setController
     }
   }

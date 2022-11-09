@@ -56,7 +56,19 @@ export default defineComponent({
 }
 
 .controllers {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-column-start: 3;
+  justify-items: flex-end;
   gap: 1rem;
+}
+
+@media (max-width: 540px) {
+  .header {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    justify-content: flex-end;
+    gap: .5rem;
+  }
 }
 </style>

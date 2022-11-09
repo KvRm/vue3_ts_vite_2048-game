@@ -45,7 +45,13 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .game {
-  width: 484px;
+  max-width: 484px;
   margin: 3rem auto;
+}
+
+@media (max-width: 540px) {
+  .game {
+    max-width: 344px;
+  }
 }
 </style>
