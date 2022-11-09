@@ -41,7 +41,6 @@ export default defineComponent({
   position: relative;
   padding: 5px;
   border-radius: 5px;
-  transition: background 0.2s;
 
   .icon {
     position: relative;
@@ -53,16 +52,12 @@ export default defineComponent({
     display: block;
     border-radius: 5px;
     position: absolute;
-    background: var(--icon-hover);
+    background: var(--primary-bg-color);
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
     z-index: 999;
   }
-
-  //&:hover {
-  //  background: var(--icon-hover);
-  //}
 }
 </style>
