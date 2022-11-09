@@ -1,13 +1,18 @@
 <template>
-  <div class="playground">
-    <number-component v-for="(item, index) in arr" :key="index" :value="item"/>
+  <div class="playground" ref="playgroundRef">
+    <number-component
+        v-for="(item, index) in arr"
+        :key="index"
+        :value="item"
+    />
   </div>
 </template>
 
 <script lang="ts">
 
-import {defineComponent} from "vue";
+import {defineComponent, onMounted, onUnmounted, ref} from "vue";
 import NumberComponent from "./NumberComponent.vue";
+import {swipe} from "../composables/swipeListener";
 
 export default defineComponent({
   name: 'MainView',
@@ -18,8 +23,31 @@ export default defineComponent({
   setup() {
     const arr = [2, 4, 8, 16, 32, 64, 128, 512, 1024, 2048, 4096, 8192, 16384, 32768, 0, 32]
 
+    const playgroundRef = ref<HTMLDivElement | null>(null)
+
+    onMounted(() => {
+      playgroundRef.value?.addEventListener("mousedown", (e: MouseEvent) =>
+          swipe(e, playgroundRef.value as HTMLDivElement)
+      )
+      playgroundRef.value?.addEventListener("touchstart", (e: TouchEvent) =>
+          swipe(e, playgroundRef.value as HTMLDivElement)
+      )
+      window.addEventListener("keyup", (e: KeyboardEvent) =>
+          swipe(e, playgroundRef.value as HTMLDivElement)
+      )
+
+      playgroundRef.value?.addEventListener("dragstart", () => false)
+    })
+
+    onUnmounted(() => {
+      playgroundRef.value?.removeEventListener("mousedown", () => swipe, false)
+      playgroundRef.value?.removeEventListener("touchstart", () => swipe, false)
+      playgroundRef.value?.removeEventListener("dragstart", () => false, false)
+    })
+
     return {
-      arr
+      arr,
+      playgroundRef
     }
   }
 })
@@ -35,5 +63,6 @@ export default defineComponent({
   border-radius: 10px;
   border: 2px solid var(--primary-font-color);
   overflow: hidden;
+  user-select: none;
 }
 </style>
