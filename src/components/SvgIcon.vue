@@ -1,12 +1,14 @@
 <template>
-  <font-awesome-icon
-      :icon="`fa-solid fa-${name}`"
-      class="icon"
-      :style="{
+  <span class="icon-container">
+    <font-awesome-icon
+        :icon="`fa-solid fa-${name}`"
+        class="icon"
+        :style="{
         width,
         height
       }"
-  />
+    />
+  </span>
 </template>
 
 <script lang="ts">
@@ -34,13 +36,33 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.icon {
+.icon-container {
+  display: inline-flex;
+  position: relative;
   padding: 5px;
   border-radius: 5px;
   transition: background 0.2s;
 
-  &:hover {
-    background: var(--icon-hover);
+  .icon {
+    position: relative;
+    z-index: 1000;
   }
+
+  &:hover::after {
+    content: '';
+    display: block;
+    border-radius: 5px;
+    position: absolute;
+    background: var(--icon-hover);
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 999;
+  }
+
+  //&:hover {
+  //  background: var(--icon-hover);
+  //}
 }
 </style>
