@@ -3,6 +3,8 @@ import {Controller, Side} from "../types";
 import {useGameControllerStore} from "../stores";
 import {computed} from "vue";
 
+const gameWorker = new Worker("../src/utils/gameWorker.ts")
+
 export const swipe = (e: MouseEvent | TouchEvent | KeyboardEvent, playground: HTMLCanvasElement) => {
 	const controllerStore = useGameControllerStore()
 	const controller = computed<Controller>(() => controllerStore.getController)
@@ -27,9 +29,10 @@ export const swipe = (e: MouseEvent | TouchEvent | KeyboardEvent, playground: HT
 			const side: Side | null = getDetectedSide(e, {startX, startY})
 
 			if (side) {
-				console.log(side)
 				playground.removeEventListener('mousemove', onMouseMove, false)
 				playground.removeEventListener("touchmove", onMouseMove, false)
+
+				gameWorker.postMessage(side)
 			}
 		}
 
@@ -62,5 +65,7 @@ const keyboardSwipe = (e: KeyboardEvent) => {
 	if (e.code === "ArrowLeft" || e.code === "KeyA") {
 		side = "left"
 	}
-	console.log(side)
+
+	if (side !== null)
+		gameWorker.postMessage(side)
 }

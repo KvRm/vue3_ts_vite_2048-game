@@ -55,6 +55,9 @@ export default defineComponent({
     const playgroundRef = ref<HTMLCanvasElement | null>(null)
 
     onMounted(() => {
+      if (window.Worker) {
+      }
+
       playgroundRef.value?.addEventListener("mousedown", (e: MouseEvent) =>
           swipe(e, playgroundRef.value as HTMLCanvasElement)
       )
