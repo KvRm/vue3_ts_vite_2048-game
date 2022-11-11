@@ -1,19 +1,19 @@
 <template>
-  <div class="playground" ref="playgroundRef">
-    <number-component
-        v-for="(item, index) in cells"
-        :key="index"
-        :value="item"
-    />
-  </div>
+  <canvas
+      :width="playgroundSize.width"
+      :height="playgroundSize.height"
+      class="playground"
+      ref="playgroundRef">
+  </canvas>
 </template>
 
 <script lang="ts">
 
-import {computed, defineComponent, onMounted, onUnmounted, ref} from "vue";
+import {computed, defineComponent, onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import NumberComponent from "./NumberComponent.vue";
 import {swipe} from "../utils/swipeListener";
 import {useCellsStore} from "../stores";
+import {useWidth} from "../utils/useWidth";
 
 export default defineComponent({
   name: 'MainView',
@@ -23,21 +23,46 @@ export default defineComponent({
 
   setup() {
     const store = useCellsStore()
+    const {addListener, removeListener} = useWidth()
+
+    const playgroundSize = reactive<{ width: number, height: number }>({
+      width: 484,
+      height: 484
+    })
+    const screenWidth = ref<number>(window.innerWidth)
+
+    onMounted(() =>
+        addListener((newWidth: number) => screenWidth.value = newWidth)
+    )
+
+    onUnmounted(() =>
+        removeListener((newWidth: number) => screenWidth.value = newWidth)
+    )
+
+    watch(screenWidth, () => {
+      if (screenWidth.value <= 540) {
+        playgroundSize.height = 344
+        playgroundSize.width = 344
+      } else {
+        playgroundSize.height = 484
+        playgroundSize.width = 484
+      }
+    })
 
     const cells = computed<number[]>(() => store.getCells)
     store.setCells([2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
-    const playgroundRef = ref<HTMLDivElement | null>(null)
+    const playgroundRef = ref<HTMLCanvasElement | null>(null)
 
     onMounted(() => {
       playgroundRef.value?.addEventListener("mousedown", (e: MouseEvent) =>
-          swipe(e, playgroundRef.value as HTMLDivElement)
+          swipe(e, playgroundRef.value as HTMLCanvasElement)
       )
       playgroundRef.value?.addEventListener("touchstart", (e: TouchEvent) =>
-          swipe(e, playgroundRef.value as HTMLDivElement)
+          swipe(e, playgroundRef.value as HTMLCanvasElement)
       )
       window.addEventListener("keydown", (e: KeyboardEvent) =>
-          swipe(e, playgroundRef.value as HTMLDivElement)
+          swipe(e, playgroundRef.value as HTMLCanvasElement)
       )
 
       playgroundRef.value?.addEventListener("dragstart", () => false)
@@ -51,6 +76,7 @@ export default defineComponent({
 
     return {
       cells,
+      playgroundSize,
       playgroundRef
     }
   }
