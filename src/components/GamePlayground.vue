@@ -1,5 +1,6 @@
 <template>
   <canvas
+      id="playground"
       :width="playgroundSize.width"
       :height="playgroundSize.height"
       class="playground"
@@ -14,6 +15,7 @@ import NumberComponent from "./NumberComponent.vue";
 import {swipe} from "../utils/swipeListener";
 import {useCellsStore} from "../stores";
 import {useWidth} from "../utils/useWidth";
+import {makeMove} from "../utils/makeMove";
 
 export default defineComponent({
   name: 'MainView',
@@ -57,6 +59,8 @@ export default defineComponent({
     onMounted(() => {
       if (window.Worker) {
       }
+
+      makeMove()
 
       playgroundRef.value?.addEventListener("mousedown", (e: MouseEvent) =>
           swipe(e, playgroundRef.value as HTMLCanvasElement)

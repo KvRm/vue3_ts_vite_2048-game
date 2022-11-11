@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import {computed, ref} from "vue";
-import {Controller} from "../types/Controller";
+import {Controller} from "../types";
 
 export const useCellsStore = defineStore("cells", () => {
 	const cells = ref<number[]>([])
