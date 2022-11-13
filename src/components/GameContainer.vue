@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-// import's 
+
 import {defineComponent, onMounted} from "vue";
 import GameHeader from "./GameHeader.vue"
 import GamePlayground from "./GamePlayground.vue"
