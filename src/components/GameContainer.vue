@@ -15,7 +15,7 @@ import GameController from "./GameController.vue"
 import SvgIcon from "./SvgIcon.vue";
 import {useGameControllerStore} from "../stores";
 import {LSKeys, useLocalStorage} from "../utils/localStorage";
-import {Controller} from "../types/Controller";
+import {Controller} from "../types";
 
 export default defineComponent({
   name: 'MainView',

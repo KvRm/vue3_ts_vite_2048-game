@@ -2,7 +2,6 @@ import {getDetectedSide} from "./detectSide";
 import {Controller, Side} from "../types";
 import {useGameControllerStore} from "../stores";
 import {computed} from "vue";
-import {Controller} from "../types/Controller";
 import {makeMove} from "./makeMove";
 
 export const swipe = (e: MouseEvent | TouchEvent | KeyboardEvent, playground: HTMLCanvasElement) => {
@@ -32,8 +31,6 @@ export const swipe = (e: MouseEvent | TouchEvent | KeyboardEvent, playground: HT
 				makeMove(side)
 				playground.removeEventListener('mousemove', onMouseMove, false)
 				playground.removeEventListener("touchmove", onMouseMove, false)
-
-				changeSide(side)
 			}
 		}
 

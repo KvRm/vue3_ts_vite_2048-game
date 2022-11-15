@@ -10,12 +10,11 @@
 
 <script lang="ts">
 
-import {computed, defineComponent, onMounted, onUnmounted, ref, watchEffect} from "vue";
+import {computed, defineComponent, onMounted, onUnmounted, reactive, ref, watch, watchEffect} from "vue";
 import NumberComponent from "./NumberComponent.vue";
 import {swipe} from "../utils/swipeListener";
 import {useCellsStore} from "../stores";
 import {useWidth} from "../utils/useWidth";
-import {makeMove} from "../utils/makeMove";
 
 export default defineComponent({
   name: 'MainView',
@@ -57,11 +56,6 @@ export default defineComponent({
     const playgroundRef = ref<HTMLCanvasElement | null>(null)
 
     onMounted(() => {
-      if (window.Worker) {
-      }
-
-      makeMove()
-
       playgroundRef.value?.addEventListener("mousedown", (e: MouseEvent) =>
           swipe(e, playgroundRef.value as HTMLCanvasElement)
       )
