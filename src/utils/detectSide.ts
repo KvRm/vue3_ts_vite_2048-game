@@ -1,9 +1,9 @@
-import {Side} from "../types/Side";
+import {Side} from "../types";
 
 export const getDetectedSide = (
 	e: MouseEvent | TouchEvent, startPos: { startX: number, startY: number }
 ): Side | null => {
-	const detectDistance: number = 100
+	const detectDistance: number = 90
 	let endX: number
 	let endY: number
 

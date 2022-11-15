@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onMounted, ref, watch} from "vue"
+import {computed, defineComponent, onMounted, onUnmounted, ref, watch} from "vue"
 import SvgIcon from "./SvgIcon.vue"
 import {useGameControllerStore} from "../stores";
 import {Controller} from "../types";
@@ -38,9 +38,11 @@ export default defineComponent({
     const ls = useLocalStorage()
     const screenWidth = ref<number>(window.innerWidth)
 
-    onMounted(() => useWidth((newWidth: number) => {
-      screenWidth.value = newWidth
-    }))
+    const {removeListener, addListener} = useWidth()
+
+    onMounted(() => addListener((newWidth: number) => screenWidth.value = newWidth))
+
+    onUnmounted(() => removeListener((newWidth: number) => screenWidth.value = newWidth))
 
     const controller = computed<Controller>(() => controllerStore.controller)
 

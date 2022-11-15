@@ -14,6 +14,8 @@ import {computed, defineComponent, onMounted, onUnmounted, ref, watchEffect} fro
 import NumberComponent from "./NumberComponent.vue";
 import {swipe} from "../utils/swipeListener";
 import {useCellsStore} from "../stores";
+import {useWidth} from "../utils/useWidth";
+import {makeMove} from "../utils/makeMove";
 
 export default defineComponent({
   name: 'MainView',
@@ -23,21 +25,51 @@ export default defineComponent({
 
   setup() {
     const store = useCellsStore()
+    const {addListener, removeListener} = useWidth()
+
+    const playgroundSize = reactive<{ width: number, height: number }>({
+      width: 484,
+      height: 484
+    })
+    const screenWidth = ref<number>(window.innerWidth)
+
+    onMounted(() =>
+        addListener((newWidth: number) => screenWidth.value = newWidth)
+    )
+
+    onUnmounted(() =>
+        removeListener((newWidth: number) => screenWidth.value = newWidth)
+    )
+
+    watch(screenWidth, () => {
+      if (screenWidth.value <= 540) {
+        playgroundSize.height = 344
+        playgroundSize.width = 344
+      } else {
+        playgroundSize.height = 484
+        playgroundSize.width = 484
+      }
+    })
 
     const playgroundCells = ref<number[]>([])
     const cells = computed<number[][]>(() => store.getCells)
 
-    const playgroundRef = ref<HTMLDivElement | null>(null)
+    const playgroundRef = ref<HTMLCanvasElement | null>(null)
 
     onMounted(() => {
+      if (window.Worker) {
+      }
+
+      makeMove()
+
       playgroundRef.value?.addEventListener("mousedown", (e: MouseEvent) =>
-          swipe(e, playgroundRef.value as HTMLDivElement)
+          swipe(e, playgroundRef.value as HTMLCanvasElement)
       )
       playgroundRef.value?.addEventListener("touchstart", (e: TouchEvent) =>
-          swipe(e, playgroundRef.value as HTMLDivElement)
+          swipe(e, playgroundRef.value as HTMLCanvasElement)
       )
       window.addEventListener("keydown", (e: KeyboardEvent) =>
-          swipe(e, playgroundRef.value as HTMLDivElement)
+          swipe(e, playgroundRef.value as HTMLCanvasElement)
       )
 
       playgroundRef.value?.addEventListener("dragstart", () => false)
