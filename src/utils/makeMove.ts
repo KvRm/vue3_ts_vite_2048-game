@@ -1,45 +1,87 @@
 import {Side} from "../types";
-import {NumberBlock} from "../types/Models/NumberBlock";
 
-const gameWorker = new Worker("../src/utils/gameWorker.ts")
+import {useCellsStore} from "../stores";
+import {computed} from "vue";
 
-let moveSide: Side | null = null
+export const makeMove = (side: Side): void => {
+	const store = useCellsStore()
 
-export const makeMove = (): void => {
-	const canvas: HTMLCanvasElement = document.getElementById("playground") as HTMLCanvasElement
-	const ctx: CanvasRenderingContext2D = canvas.getContext("2d") as CanvasRenderingContext2D
+	const cells = computed<number[][]>(() => store.getCells)
 
-	let numberBlock1 = new NumberBlock({lineY: 1, lineX: 1}, 120)
+	if (side === "left" || side === "right") {
+		let newCells: number[][] = getNonReactiveCells(cells.value)
 
+		if (side === "left")
+			swipeLeft(newCells)
 
-	const move = () => {
-		console.log('move')
-		if (moveSide === "right")
-			numberBlock1.moveRight()
-		else if (moveSide === "left")
-			numberBlock1.moveLeft()
-		else if (moveSide === "up")
-			numberBlock1.moveUp()
-		else if (moveSide === "down")
-			numberBlock1.moveDown()
-		else numberBlock1.stop()
-	};
+		if (side === "right")
+			swipeRight(newCells)
+	}
 
-	const clear = () => {
-		ctx.clearRect(0, 0, 800, 800)
-	};
+	function getNonReactiveCells(cells: number[][]) {
+		let newCells: number[][] = []
+		cells.forEach(c => {
+			let arr: number[] = []
+			c.forEach(c => arr.push(c))
+			newCells.push(arr)
+		})
 
-	const update = () => {
-		clear()
-		numberBlock1.drawRect(ctx)
-		move()
-		ctx.save()
-		requestAnimationFrame(update)
-	};
+		return newCells
+	}
 
-	update()
-};
+	function getCellsWithoutZeros(cells: number[][]): number[][] {
+		return cells.map(c => c.filter(e => e !== 0))
+	}
 
-export const changeSide = (side: Side) => {
-	moveSide = side
+	function swipeLeft(newCells: number[][]): void {
+		newCells = getCellsWithoutZeros(newCells)
+		unitCellsOnSwipeLeft(newCells)
+		newCells = getCellsWithoutZeros(newCells)
+		addZerosOnSwipeLeft(newCells)
+		store.setCells(newCells)
+
+		function addZerosOnSwipeLeft(cells: number[][]): void {
+			cells.forEach(c => {
+					while (c.length < 4) c.push(0)
+				}
+			)
+		}
+
+		function unitCellsOnSwipeLeft(cells: number[][]): void {
+			cells.forEach(c => {
+				for (let i = 0; i < c.length; i++) {
+					if (c[i] === c[i + 1]) {
+						c[i] *= 2
+						c[i + 1] = 0
+					}
+				}
+			})
+		}
+	}
+
+	function swipeRight(newCells: number[][]): void {
+		newCells = getCellsWithoutZeros(newCells)
+		unitCellsOnSwipeRight(newCells)
+		newCells = getCellsWithoutZeros(newCells)
+		addZerosOnSwipeRight(newCells)
+		store.setCells(newCells)
+
+		function addZerosOnSwipeRight(cells: number[][]): void {
+			cells.forEach(c => {
+					while (c.length < 4) c.unshift(0)
+				}
+			)
+		}
+
+		function unitCellsOnSwipeRight(cells: number[][]): void {
+			cells.forEach(c => {
+				for (let i = c.length - 1; i >= 0; i--) {
+					if (c[i] === c[i - 1]) {
+						c[i] *= 2
+						c[i - 1] = 0
+					}
+				}
+			})
+		}
+	}
 }
