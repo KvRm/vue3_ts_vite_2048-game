@@ -1,16 +1,16 @@
 <template>
   <div class="playground" ref="playgroundRef">
     <number-component
-        v-for="(item, index) in cells"
+        v-for="(cell, index) in playgroundCells"
         :key="index"
-        :value="item"
+        :value="cell"
     />
   </div>
 </template>
 
 <script lang="ts">
 
-import {computed, defineComponent, onMounted, onUnmounted, ref} from "vue";
+import {computed, defineComponent, onMounted, onUnmounted, ref, watchEffect} from "vue";
 import NumberComponent from "./NumberComponent.vue";
 import {swipe} from "../utils/swipeListener";
 import {useCellsStore} from "../stores";
@@ -24,8 +24,8 @@ export default defineComponent({
   setup() {
     const store = useCellsStore()
 
-    const cells = computed<number[]>(() => store.getCells)
-    store.setCells([2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+    const playgroundCells = ref<number[]>([])
+    const cells = computed<number[][]>(() => store.getCells)
 
     const playgroundRef = ref<HTMLDivElement | null>(null)
 
@@ -49,9 +49,14 @@ export default defineComponent({
       playgroundRef.value?.removeEventListener("dragstart", () => false, false)
     })
 
+    watchEffect(() => {
+      playgroundCells.value = cells.value.reduce((c, res) => [...c, ...res], [])
+    })
+
     return {
+      playgroundCells,
       cells,
-      playgroundRef
+      playgroundRef,
     }
   }
 })
@@ -61,6 +66,8 @@ export default defineComponent({
 .playground {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 484px;
+  height: 484px;
   margin-bottom: 2rem;
   background: var(--second-bg-color);
   border-radius: 10px;
@@ -70,7 +77,7 @@ export default defineComponent({
 }
 
 @media (max-width: 540px) {
-  .game {
+  .playground {
     width: 344px;
     height: 344px;
   }

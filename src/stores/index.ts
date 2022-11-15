@@ -1,12 +1,18 @@
 import {defineStore} from "pinia";
 import {computed, ref} from "vue";
-import {Controller} from "../types/Controller";
+import {Controller} from "../types";
 
 export const useCellsStore = defineStore("cells", () => {
-	const cells = ref<number[]>([])
-	const getCells = computed<number[]>(() => cells.value)
+	const cells = ref<number[][]>([
+		[0, 0, 0, 0],
+		[2, 2, 2, 2],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0]
+	])
 
-	const setCells = (payload: number[]): void => {
+	const getCells = computed<number[][]>(() => cells.value)
+
+	const setCells = (payload: number[][]): void => {
 		cells.value = payload
 	}
 

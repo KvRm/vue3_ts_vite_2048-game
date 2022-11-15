@@ -3,6 +3,7 @@ import {Side} from "../types/Side";
 import {useGameControllerStore} from "../stores";
 import {computed} from "vue";
 import {Controller} from "../types/Controller";
+import {makeMove} from "./makeMove";
 
 export const swipe = (e: MouseEvent | TouchEvent | KeyboardEvent, playground: HTMLDivElement) => {
 	const controllerStore = useGameControllerStore()
@@ -29,7 +30,7 @@ export const swipe = (e: MouseEvent | TouchEvent | KeyboardEvent, playground: HT
 			const side: Side | null = getDetectedSide(e, {startX, startY})
 
 			if (side) {
-				console.log(side)
+				makeMove(side)
 				playground.removeEventListener('mousemove', onMouseMove, false)
 				playground.removeEventListener("touchmove", onMouseMove, false)
 			}
@@ -64,5 +65,5 @@ const keyboardSwipe = (e: KeyboardEvent) => {
 	if (e.code === "ArrowLeft" || e.code === "KeyA") {
 		side = "left"
 	}
-	console.log(side)
+	if (side) makeMove(side)
 }
