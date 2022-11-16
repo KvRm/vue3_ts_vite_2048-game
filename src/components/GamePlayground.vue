@@ -15,6 +15,7 @@ import NumberComponent from "./NumberComponent.vue";
 import {swipe} from "../utils/swipeListener";
 import {useCellsStore} from "../stores";
 import {useWidth} from "../utils/useWidth";
+import {useLocalStorage} from "../utils/localStorage";
 
 export default defineComponent({
   name: 'MainView',
@@ -24,7 +25,13 @@ export default defineComponent({
 
   setup() {
     const store = useCellsStore()
+    const ls = useLocalStorage()
     const {addListener, removeListener} = useWidth()
+
+    const playgroundCells = ref<number[]>([])
+    const cells = computed<number[][]>(() => store.getCells)
+
+    const playgroundRef = ref<HTMLCanvasElement | null>(null)
 
     const playgroundSize = reactive<{ width: number, height: number }>({
       width: 484,
@@ -32,30 +39,12 @@ export default defineComponent({
     })
     const screenWidth = ref<number>(window.innerWidth)
 
-    onMounted(() =>
-        addListener((newWidth: number) => screenWidth.value = newWidth)
-    )
-
-    onUnmounted(() =>
-        removeListener((newWidth: number) => screenWidth.value = newWidth)
-    )
-
-    watch(screenWidth, () => {
-      if (screenWidth.value <= 540) {
-        playgroundSize.height = 344
-        playgroundSize.width = 344
-      } else {
-        playgroundSize.height = 484
-        playgroundSize.width = 484
-      }
-    })
-
-    const playgroundCells = ref<number[]>([])
-    const cells = computed<number[][]>(() => store.getCells)
-
-    const playgroundRef = ref<HTMLCanvasElement | null>(null)
-
     onMounted(() => {
+      // if (ls.get(LSKeys.CELLS))
+      //   console.log(ls.get(LSKeys.CELLS))
+
+      addListener((newWidth: number) => screenWidth.value = newWidth)
+
       playgroundRef.value?.addEventListener("mousedown", (e: MouseEvent) =>
           swipe(e, playgroundRef.value as HTMLCanvasElement)
       )
@@ -70,9 +59,23 @@ export default defineComponent({
     })
 
     onUnmounted(() => {
+      // ls.set(LSKeys.CELLS, cells.value)
+
+      removeListener((newWidth: number) => screenWidth.value = newWidth)
+
       playgroundRef.value?.removeEventListener("mousedown", () => swipe, false)
       playgroundRef.value?.removeEventListener("touchstart", () => swipe, false)
       playgroundRef.value?.removeEventListener("dragstart", () => false, false)
+    })
+
+    watch(screenWidth, () => {
+      if (screenWidth.value <= 540) {
+        playgroundSize.height = 344
+        playgroundSize.width = 344
+      } else {
+        playgroundSize.height = 484
+        playgroundSize.width = 484
+      }
     })
 
     watchEffect(() => {
