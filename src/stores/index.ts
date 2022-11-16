@@ -4,10 +4,10 @@ import {Controller} from "../types";
 
 export const useCellsStore = defineStore("cells", () => {
 	const cells = ref<number[][]>([
-		[0, 0, 0, 0],
+		[2, 0, 0, 0],
 		[2, 2, 2, 2],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0]
+		[4, 0, 0, 0],
+		[4, 0, 0, 0]
 	])
 
 	const getCells = computed<number[][]>(() => cells.value)
@@ -16,7 +16,19 @@ export const useCellsStore = defineStore("cells", () => {
 		cells.value = payload
 	}
 
-	return {cells, getCells, setCells}
+	const setCell = (payload: number, index: number[]): void => {
+		try {
+			const c: number = index[0]
+			const r: number = index[1]
+
+			if (c && r)
+				cells.value[c][r] = payload
+		} catch (e) {
+			console.log(index)
+		}
+	}
+
+	return {cells, getCells, setCells, setCell}
 })
 
 export const useGameControllerStore = defineStore("controller", () => {
