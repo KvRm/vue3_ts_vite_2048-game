@@ -54,6 +54,8 @@ export default defineComponent({
     watch(screenWidth, () => {
       if (screenWidth.value <= 540)
         controllerStore.setController("mouse")
+      else
+        controllerStore.setController("keyboard")
     })
 
     return {

@@ -81,6 +81,7 @@ export default defineComponent({
   .number {
     width: 77px;
     height: 77px;
+    font-size: 14px;
   }
 }
 

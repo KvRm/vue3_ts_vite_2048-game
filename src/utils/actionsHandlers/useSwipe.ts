@@ -2,6 +2,7 @@ import {useCellsStore} from "../../stores";
 import {computed} from "vue";
 import {useCells} from "./useCells";
 import {ArraySide, Side} from "../../types";
+import {LSKeys, useLocalStorage} from "../localStorage";
 
 export const useSwipe = () => {
 	const swipeLeft = (): void => swipe("left")
@@ -18,6 +19,7 @@ export const useSwipe = () => {
 }
 
 function swipe(side: Side): void {
+	const ls = useLocalStorage()
 	const store = useCellsStore()
 	const cells = computed<number[][]>(() => store.getCells)
 	const {
@@ -50,4 +52,6 @@ function swipe(side: Side): void {
 
 	store.setCells(newCells)
 	addRandomNumberToCells(newCells)
+
+	ls.set(LSKeys.CELLS, JSON.stringify(newCells))
 }

@@ -31,6 +31,5 @@ export const makeMove = (side: Side): void => {
 		!canMove("down")
 	) {
 		console.log('game over')
-		return
 	}
 }

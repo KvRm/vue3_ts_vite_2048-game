@@ -4,10 +4,10 @@ import {Controller} from "../types";
 
 export const useCellsStore = defineStore("cells", () => {
 	const cells = ref<number[][]>([
-		[2, 0, 0, 0],
-		[2, 2, 2, 2],
-		[4, 0, 0, 0],
-		[4, 0, 0, 0]
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0]
 	])
 
 	const getCells = computed<number[][]>(() => cells.value)
