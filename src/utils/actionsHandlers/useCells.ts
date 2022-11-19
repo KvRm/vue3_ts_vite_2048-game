@@ -75,9 +75,9 @@ export const useCells = () => {
 			const randomIndex: number = getRandomIndexFromCells(zeroIndexesCells)
 			const randomNumber: 4 | 2 = getNewCellRandomNumber()
 
-			const c: number = zeroIndexesCells[randomIndex][0]
-			const r: number = zeroIndexesCells[randomIndex][1]
-			newCells[c][r] = randomNumber
+			const r: number = zeroIndexesCells[randomIndex][0]
+			const c: number = zeroIndexesCells[randomIndex][1]
+			newCells[r][c] = randomNumber
 		}
 
 		return newCells
@@ -94,17 +94,51 @@ export const useCells = () => {
 
 			return zeroIndexes
 		}
+	}
 
-		function getNewCellRandomNumber(): 4 | 2 {
-			const mathRandom: number = Math.random()
-			if (mathRandom > 0.2) return 2
-			return 4
+	const getStaterCells = (): number[][] => {
+		const newCells: number[][] = [
+			[0, 0, 0, 0],
+			[0, 0, 0, 0],
+			[0, 0, 0, 0],
+			[0, 0, 0, 0]
+		]
+
+		const randomIndexes: number[][] = []
+
+		for (let i = 0; randomIndexes.length < 2; i++) {
+			const r: number = getRandomNumber(3)
+			const c: number = getRandomNumber(3)
+
+			if (randomIndexes.length < 1)
+				randomIndexes.push([r, c])
+			else if (r !== randomIndexes[0][0] && c !== randomIndexes[0][1])
+				randomIndexes.push([r, c])
 		}
 
-		function getRandomIndexFromCells(cells: number[][]): number {
-			const max = cells.length - 1
+		for (let indexes of randomIndexes) {
+			const r: number = indexes[0]
+			const c: number = indexes[1]
+
+			newCells[r][c] = getNewCellRandomNumber()
+		}
+
+		return newCells
+
+		function getRandomNumber(max: number) {
 			return Math.floor(Math.random() * (Math.floor(max) + 1))
 		}
+	}
+
+	function getNewCellRandomNumber(): 4 | 2 {
+		const mathRandom: number = Math.random()
+		if (mathRandom > 0.2) return 2
+		return 4
+	}
+
+	function getRandomIndexFromCells(cells: number[][]): number {
+		const max = cells.length - 1
+		return Math.floor(Math.random() * (Math.floor(max) + 1))
 	}
 
 	return {
@@ -113,6 +147,7 @@ export const useCells = () => {
 		getCellsWithoutZeros,
 		getCellsWithZeros,
 		getUnitedCells,
-		getCellsWithNewRandomNumber
+		getCellsWithNewRandomNumber,
+		getStaterCells
 	}
 }

@@ -11,7 +11,7 @@
     </div>
     <div class="controllers">
       <svg-icon :name="`backward`" :height="26" :width="26"/>
-      <svg-icon :name="`rotate-right`" :height="26" :width="26"/>
+      <svg-icon @click="restartGame" :name="`rotate-right`" :height="26" :width="26"/>
     </div>
   </div>
 </template>
@@ -20,6 +20,8 @@
 
 import {defineComponent} from "vue";
 import SvgIcon from "./SvgIcon.vue";
+import {useCellsStore, useGameStore} from "../stores";
+import {useCells} from "../utils/actionsHandlers/useCells";
 
 export default defineComponent({
   name: 'MainView',
@@ -28,7 +30,13 @@ export default defineComponent({
   },
 
   setup() {
-    return {}
+    const cellsStore = useCellsStore()
+    const gameStore = useGameStore()
+    const {getStaterCells} = useCells()
+
+    const restartGame = () => cellsStore.setCells(getStaterCells())
+
+    return {restartGame}
   }
 })
 </script>
