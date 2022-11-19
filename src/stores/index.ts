@@ -21,10 +21,11 @@ export const useCellsStore = defineStore("cells", () => {
 			const c: number = index[0]
 			const r: number = index[1]
 
-			if (c && r)
+			const canSet: boolean = (c >= 0 && c <= 3) && (r >= 0 && r <= 3)
+			if (canSet)
 				cells.value[c][r] = payload
 		} catch (e) {
-			console.log(index)
+			console.log(e)
 		}
 	}
 

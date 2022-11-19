@@ -12,7 +12,7 @@
 
 import {computed, defineComponent, onMounted, onUnmounted, reactive, ref, watch, watchEffect} from "vue";
 import NumberComponent from "./NumberComponent.vue";
-import {swipe} from "../utils/swipeListener";
+import {swipe} from "../utils/actionsListeners/swipeListener";
 import {useCellsStore} from "../stores";
 import {useWidth} from "../utils/useWidth";
 import {useLocalStorage} from "../utils/localStorage";

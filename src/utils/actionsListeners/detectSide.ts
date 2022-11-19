@@ -1,4 +1,4 @@
-import {Side} from "../types";
+import {Side} from "../../types";
 
 export const getDetectedSide = (
 	e: MouseEvent | TouchEvent, startPos: { startX: number, startY: number }

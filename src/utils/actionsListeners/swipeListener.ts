@@ -1,8 +1,8 @@
 import {getDetectedSide} from "./detectSide";
-import {Controller, Side} from "../types";
-import {useGameControllerStore} from "../stores";
+import {Controller, Side} from "../../types";
+import {useGameControllerStore} from "../../stores";
 import {computed} from "vue";
-import {makeMove} from "./makeMove";
+import {makeMove} from "../actionsHandlers/makeMove";
 
 export const swipe = (e: MouseEvent | TouchEvent | KeyboardEvent, playground: HTMLCanvasElement) => {
 	const controllerStore = useGameControllerStore()
