@@ -1,4 +1,5 @@
 import {ArraySide} from "../../types";
+import {useScoreStore} from "../../stores";
 
 export const useCells = () => {
 	const getCells = (cells: number[][]): number[][] =>
@@ -20,14 +21,16 @@ export const useCells = () => {
 		cells.map(c => c.filter(e => e !== 0))
 
 	const getUnitedCells = (cells: number[][], arraySide: ArraySide): number[][] => {
-		const newCells = cells
+		const scoreStore = useScoreStore()
 
+		const newCells = cells
 		if (arraySide === "start") {
 			newCells.forEach(c => {
 				for (let i = 0; i < c.length; i++) {
 					if (c[i] === c[i + 1]) {
 						c[i] *= 2
 						c[i + 1] = 0
+						scoreStore.increaseCurrentScore(c[i])
 					}
 				}
 			})
@@ -39,6 +42,7 @@ export const useCells = () => {
 					if (c[i] === c[i - 1]) {
 						c[i] *= 2
 						c[i - 1] = 0
+						scoreStore.increaseCurrentScore(c[i])
 					}
 				}
 			})

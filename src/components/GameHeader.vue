@@ -3,11 +3,11 @@
     <h1 class="title">2048</h1>
     <div class="score">
       <span class="score-header">Current score: </span>
-      <p class="score-value">1024</p>
+      <p class="score-value">{{ currentScore }}</p>
     </div>
     <div class="score record">
       <span class="score-header record-header">Record: </span>
-      <p class="score-value record-value">1024002</p>
+      <p class="score-value record-value">{{ recordScore }}</p>
     </div>
     <div class="controllers">
       <svg-icon :name="`backward`" :height="26" :width="26"/>
@@ -18,9 +18,10 @@
 
 <script lang="ts">
 
-import {defineComponent} from "vue";
-import SvgIcon from "./SvgIcon.vue";
-import {useCellsStore, useGameStateStore} from "../stores";
+import {computed, defineComponent, onMounted} from "vue"
+import SvgIcon from "./SvgIcon.vue"
+import {useCellsStore, useGameStateStore, useScoreStore} from "../stores"
+import {LSKeys, useLocalStorage} from "../utils/localStorage";
 
 export default defineComponent({
   components: {
@@ -28,15 +29,33 @@ export default defineComponent({
   },
 
   setup() {
+    const ls = useLocalStorage()
     const cellsStore = useCellsStore()
     const gameStateStore = useGameStateStore()
+    const scoreStore = useScoreStore()
+
+    const currentScore = computed<number>(() => scoreStore.getCurrentScore)
+    const recordScore = computed<number>(() => scoreStore.getRecordScore)
+
+    onMounted(() => {
+      if (ls.get(LSKeys.CURRENT_SCORE)) {
+        const score: string | null = ls.get(LSKeys.CURRENT_SCORE)
+        if (Number(score))
+          scoreStore.setCurrentScore(Number(score))
+      }
+      if (ls.get(LSKeys.RECORD_SCORE)) {
+        const score: string | null = ls.get(LSKeys.RECORD_SCORE)
+        if (Number(score))
+          scoreStore.setRecordScore(Number(score))
+      }
+    })
 
     const restartGame = () => {
       cellsStore.setStarterCells()
       gameStateStore.setGameState("active")
     }
 
-    return {restartGame}
+    return {restartGame, currentScore, recordScore}
   }
 })
 </script>
@@ -77,6 +96,10 @@ export default defineComponent({
     grid-template-columns: auto 1fr 1fr;
     justify-content: flex-end;
     gap: .5rem;
+
+    .score-value {
+      font-size: 1.8rem;
+    }
   }
 }
 </style>
