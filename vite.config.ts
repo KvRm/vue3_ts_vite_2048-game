@@ -8,9 +8,5 @@ export default defineConfig({
 	server: {
 		port: 9090
 	},
-	css: {
-		preprocessorOptions: {
-			scss: {}
-		}
-	}
+	base: '/vue3_ts_vite_2048-game/'
 })
