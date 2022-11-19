@@ -25,10 +25,10 @@ function swipe(side: Side): void {
 	const {
 		getCells,
 		getReversedCells,
-		addRandomNumberToCells,
 		getCellsWithoutZeros,
 		getCellsWithZeros,
-		getUnitedCells
+		getUnitedCells,
+		getCellsWithNewRandomNumber
 	} = useCells()
 
 	let newCells: number[][]
@@ -50,8 +50,8 @@ function swipe(side: Side): void {
 	if (side === "up" || side === "down")
 		newCells = getReversedCells(newCells)
 
-	store.setCells(newCells)
-	addRandomNumberToCells(newCells)
+	newCells = getCellsWithNewRandomNumber(newCells)
 
+	store.setCells(newCells)
 	ls.set(LSKeys.CELLS, JSON.stringify(newCells))
 }

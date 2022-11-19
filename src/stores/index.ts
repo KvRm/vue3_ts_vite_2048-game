@@ -16,20 +16,7 @@ export const useCellsStore = defineStore("cells", () => {
 		cells.value = payload
 	}
 
-	const setCell = (payload: number, index: number[]): void => {
-		try {
-			const c: number = index[0]
-			const r: number = index[1]
-
-			const canSet: boolean = (c >= 0 && c <= 3) && (r >= 0 && r <= 3)
-			if (canSet)
-				cells.value[c][r] = payload
-		} catch (e) {
-			console.log(e)
-		}
-	}
-
-	return {cells, getCells, setCells, setCell}
+	return {cells, getCells, setCells}
 })
 
 export const useGameControllerStore = defineStore("controller", () => {

@@ -1,4 +1,3 @@
-import {useCellsStore} from "../../stores";
 import {ArraySide} from "../../types";
 
 export const useCells = () => {
@@ -68,15 +67,20 @@ export const useCells = () => {
 		return newCells
 	}
 
-	const addRandomNumberToCells = (cells: number[][]): void => {
-		const cellsStore = useCellsStore()
+	const getCellsWithNewRandomNumber = (cells: number[][]): number[][] => {
+		let newCells: number[][] = cells
 		const zeroIndexesCells: number[][] = getZeroIndexesFromCells(cells)
 
 		if (zeroIndexesCells.length) {
 			const randomIndex: number = getRandomIndexFromCells(zeroIndexesCells)
 			const randomNumber: 4 | 2 = getNewCellRandomNumber()
-			cellsStore.setCell(randomNumber, zeroIndexesCells[randomIndex])
+
+			const c: number = zeroIndexesCells[randomIndex][0]
+			const r: number = zeroIndexesCells[randomIndex][1]
+			newCells[c][r] = randomNumber
 		}
+
+		return newCells
 
 		function getZeroIndexesFromCells(cells: number[][]): number[][] {
 			const zeroIndexes: number[][] = []
@@ -109,6 +113,6 @@ export const useCells = () => {
 		getCellsWithoutZeros,
 		getCellsWithZeros,
 		getUnitedCells,
-		addRandomNumberToCells
+		getCellsWithNewRandomNumber
 	}
 }
