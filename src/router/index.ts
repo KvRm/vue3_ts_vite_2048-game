@@ -2,7 +2,7 @@ import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 
 const routes: Array<RouteRecordRaw> = [
 	{
-		path: '/vue3_ts_vite_2048-game',
+		path: '/',
 		name: 'main',
 		component: () => import('../views/MainView.vue'),
 	},
