@@ -25,9 +25,12 @@ export const useCellsStore = defineStore("cells", () => {
 		[0, 0, 0, 0],
 		[0, 0, 0, 0]
 	])
+
+	const prevCells = ref<number[][]>(cells.value)
 	const getCells = computed<number[][]>(() => cells.value)
 
 	const setCells = (payload: number[][]): void => {
+		prevCells.value = cells.value
 		cells.value = payload
 		ls.set(LSKeys.CELLS, JSON.stringify(payload))
 	}
@@ -42,7 +45,18 @@ export const useCellsStore = defineStore("cells", () => {
 		scoreStore.resetScore()
 	}
 
-	return {cells, getCells, setCells, setStarterCells}
+	const setPrevCells = (): void => {
+		setCells(prevCells.value)
+	}
+
+	return {
+		cells,
+		prevCells,
+		getCells,
+		setCells,
+		setStarterCells,
+		setPrevCells
+	}
 })
 
 export const useGameControllerStore = defineStore("controller", () => {

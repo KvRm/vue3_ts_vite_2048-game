@@ -10,7 +10,7 @@
       <p class="score-value record-value">{{ recordScore }}</p>
     </div>
     <div class="controllers">
-      <svg-icon :name="`backward`" :height="26" :width="26"/>
+      <svg-icon @click="setPrevStep" :name="`backward`" :height="26" :width="26"/>
       <svg-icon @click="restartGame" :name="`rotate-right`" :height="26" :width="26"/>
     </div>
   </div>
@@ -50,12 +50,22 @@ export default defineComponent({
       }
     })
 
-    const restartGame = () => {
+    const restartGame = (): void => {
       cellsStore.setStarterCells()
       gameStateStore.setGameState("active")
     }
 
-    return {restartGame, currentScore, recordScore}
+    const setPrevStep = (): void => {
+      cellsStore.setPrevCells()
+      gameStateStore.setGameState("active")
+    }
+
+    return {
+      currentScore,
+      recordScore,
+      restartGame,
+      setPrevStep
+    }
   }
 })
 </script>
