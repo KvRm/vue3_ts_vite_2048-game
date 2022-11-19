@@ -14,7 +14,8 @@ import {computed, defineComponent, onMounted, onUnmounted, ref} from "vue";
 import NumberComponent from "./NumberComponent.vue";
 import {swipe} from "../utils/actionsListeners/swipeListener";
 import {LSKeys, useLocalStorage} from "../utils/localStorage";
-import {useCellsStore} from "../stores";
+import {useCellsStore, useGameStateStore} from "../stores";
+import {GameState} from "../types";
 
 export default defineComponent({
   name: 'MainView',
@@ -23,15 +24,16 @@ export default defineComponent({
   },
 
   setup() {
-    const cellsStore = useCellsStore()
     const ls = useLocalStorage()
-
-    const playgroundCells = computed<number[]>(() =>
-        cells.value.reduce((c, res) => [...c, ...res], [])
-    )
-    const cells = computed<number[][]>(() => cellsStore.getCells)
+    const cellsStore = useCellsStore()
+    const gameStateStore = useGameStateStore()
 
     const playgroundRef = ref<HTMLCanvasElement | null>(null)
+
+    const cells = computed<number[][]>(() => cellsStore.getCells)
+    const playgroundCells = computed<number[]>(() =>
+        cells.value.reduce((c, res) => [...c, ...res], []))
+    const gameState = computed<GameState>(() => gameStateStore.gameState)
 
     onMounted(() => {
       if (ls.get(LSKeys.CELLS))

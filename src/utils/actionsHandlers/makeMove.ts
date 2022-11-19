@@ -1,11 +1,11 @@
 import {Side} from "../../types";
 import {canMove} from "./canMove";
 import {useSwipe} from "./useSwipe";
-import {useGameStore} from "../../stores";
+import {useGameStateStore} from "../../stores";
 
 export const makeMove = (side: Side): void => {
 	const {swipeLeft, swipeRight, swipeUp, swipeDown} = useSwipe()
-	const gameStore = useGameStore()
+	const gameStateStore = useGameStateStore()
 
 	switch (side) {
 		case "left":
@@ -32,6 +32,6 @@ export const makeMove = (side: Side): void => {
 		!canMove("up") &&
 		!canMove("down")
 	) {
-		gameStore.setGameState("over")
+		gameStateStore.setGameState("over")
 	}
 }

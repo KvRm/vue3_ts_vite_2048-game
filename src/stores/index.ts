@@ -3,7 +3,7 @@ import {computed, ref} from "vue";
 import {Controller, GameState} from "../types";
 import {LSKeys, useLocalStorage} from "../utils/localStorage";
 
-export const useGameStore = defineStore("game", () => {
+export const useGameStateStore = defineStore("game", () => {
 	const gameState = ref<GameState>("active")
 
 	const getGameState = computed<GameState>(() => gameState.value)
