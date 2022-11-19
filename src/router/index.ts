@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import('../views/Error404View.vue'),
 	},
 	{
-		path: '/vue3_ts_vite_2048-game/:pathMatch(.*)',
+		path: '/:pathMatch(.*)',
 		redirect: {
 			name: '404'
 		}
