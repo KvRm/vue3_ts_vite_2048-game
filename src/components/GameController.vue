@@ -1,6 +1,6 @@
 <template>
   <div v-if="screenWidth > 540" class="controllers">
-    <span @click="setController('keyboard')">
+    <span @click="switchController('keyboard')">
       <svg-icon
           :height="30"
           :width="30"
@@ -8,7 +8,7 @@
           :active="controller === 'keyboard'"
       />
     </span>
-    <span @click="setController('mouse')">
+    <span @click="switchController('mouse')">
       <svg-icon
           :height="30"
           :width="30"
@@ -28,7 +28,6 @@ import {LSKeys, useLocalStorage} from "../utils/localStorage";
 import {useWidth} from "../utils/useWidth";
 
 export default defineComponent({
-  name: "RadioButton",
   components: {
     SvgIcon
   },
@@ -36,19 +35,29 @@ export default defineComponent({
   setup() {
     const controllerStore = useGameControllerStore()
     const ls = useLocalStorage()
+
     const screenWidth = ref<number>(window.innerWidth)
+    const controller = computed<Controller>(() => controllerStore.controller)
 
     const {removeListener, addListener} = useWidth()
 
-    onMounted(() => addListener((newWidth: number) => screenWidth.value = newWidth))
+    onMounted(() => {
+          addListener((newWidth: number) => screenWidth.value = newWidth)
+
+          if (
+              ls.get(LSKeys.GAME_CONTROLLER) === "keyboard" ||
+              ls.get(LSKeys.GAME_CONTROLLER) === "mouse"
+          ) {
+            const controller = ls.get(LSKeys.GAME_CONTROLLER)
+            controllerStore.setController(controller as Controller)
+          }
+        }
+    )
 
     onUnmounted(() => removeListener((newWidth: number) => screenWidth.value = newWidth))
 
-    const controller = computed<Controller>(() => controllerStore.controller)
-
-    const setController = (payload: Controller) => {
+    const switchController = (payload: Controller) => {
       controllerStore.setController(payload)
-      ls.set(LSKeys.GAME_CONTROLLER, payload)
     }
 
     watch(screenWidth, () => {
@@ -61,7 +70,7 @@ export default defineComponent({
     return {
       controller,
       screenWidth,
-      setController
+      switchController
     }
   }
 })

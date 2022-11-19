@@ -17,11 +17,12 @@ export default defineComponent({
   components: {
     SvgIcon
   },
-  
+
   setup() {
     const ls = useLocalStorage()
 
     onMounted(() => {
+
       detectColorScheme()
     })
 
@@ -40,9 +41,13 @@ export default defineComponent({
             setDataThemeAttribute("dark") :
             setDataThemeAttribute("light")
       } else if (window?.matchMedia("(prefers-color-scheme: light)").matches) {
+        ls.set(LSKeys['THEME'], "light")
         setDataThemeAttribute("light")
+        detectColorScheme()
       } else {
+        ls.set(LSKeys['THEME'], "dark")
         setDataThemeAttribute("dark")
+        detectColorScheme()
       }
     }
 

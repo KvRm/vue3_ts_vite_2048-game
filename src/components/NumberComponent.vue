@@ -13,7 +13,6 @@
 import {computed, defineComponent} from "vue";
 
 export default defineComponent({
-  name: 'MainView',
   props: {
     value: {
       type: Number,

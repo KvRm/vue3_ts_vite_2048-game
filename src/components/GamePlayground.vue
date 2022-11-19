@@ -1,5 +1,5 @@
 <template>
-  <div class="playground" ref="playgroundRef">
+  <div class="game-over" ref="playgroundRef">
     <number-component
         v-for="(cell, index) in playgroundCells"
         :key="index"
@@ -14,11 +14,9 @@ import {computed, defineComponent, onMounted, onUnmounted, ref} from "vue";
 import NumberComponent from "./NumberComponent.vue";
 import {swipe} from "../utils/actionsListeners/swipeListener";
 import {LSKeys, useLocalStorage} from "../utils/localStorage";
-import {useCellsStore, useGameStateStore} from "../stores";
-import {GameState} from "../types";
+import {useCellsStore} from "../stores";
 
 export default defineComponent({
-  name: 'MainView',
   components: {
     NumberComponent
   },
@@ -26,18 +24,19 @@ export default defineComponent({
   setup() {
     const ls = useLocalStorage()
     const cellsStore = useCellsStore()
-    const gameStateStore = useGameStateStore()
-
+  
     const playgroundRef = ref<HTMLCanvasElement | null>(null)
 
     const cells = computed<number[][]>(() => cellsStore.getCells)
     const playgroundCells = computed<number[]>(() =>
         cells.value.reduce((c, res) => [...c, ...res], []))
-    const gameState = computed<GameState>(() => gameStateStore.gameState)
 
     onMounted(() => {
-      if (ls.get(LSKeys.CELLS))
+      if (ls.get(LSKeys.CELLS)) {
         cellsStore.setCells(JSON.parse(ls.get(LSKeys.CELLS) as string))
+      } else {
+        cellsStore.setStarterCells()
+      }
 
       playgroundRef.value?.addEventListener("mousedown", (e: MouseEvent) =>
           swipe(e, playgroundRef.value as HTMLCanvasElement)
@@ -68,7 +67,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.playground {
+.game-over {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   width: 484px;
@@ -82,7 +81,7 @@ export default defineComponent({
 }
 
 @media (max-width: 540px) {
-  .playground {
+  .game-over {
     width: 344px;
     height: 344px;
   }

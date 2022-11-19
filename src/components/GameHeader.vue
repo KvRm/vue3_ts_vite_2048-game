@@ -21,10 +21,8 @@
 import {defineComponent} from "vue";
 import SvgIcon from "./SvgIcon.vue";
 import {useCellsStore, useGameStateStore} from "../stores";
-import {useCells} from "../utils/actionsHandlers/useCells";
 
 export default defineComponent({
-  name: 'MainView',
   components: {
     SvgIcon
   },
@@ -32,10 +30,9 @@ export default defineComponent({
   setup() {
     const cellsStore = useCellsStore()
     const gameStateStore = useGameStateStore()
-    const {getStaterCells} = useCells()
 
     const restartGame = () => {
-      cellsStore.setCells(getStaterCells())
+      cellsStore.setStarterCells()
       gameStateStore.setGameState("active")
     }
 
