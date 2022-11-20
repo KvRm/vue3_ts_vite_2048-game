@@ -40,16 +40,9 @@ export default defineComponent({
     const controller = computed<Controller>(() => controllerStore.controller)
 
     onMounted(() => {
-        if (screenWidth)
+        if (screenWidth.value <= 540)
           controllerStore.setController('mouse')
-
-        if (
-          ls.get(LSKeys.GAME_CONTROLLER) === 'keyboard' ||
-          ls.get(LSKeys.GAME_CONTROLLER) === 'mouse'
-        ) {
-          const controller = ls.get(LSKeys.GAME_CONTROLLER)
-          controllerStore.setController(controller as Controller)
-        }
+        else setController()
       },
     )
 
@@ -57,16 +50,22 @@ export default defineComponent({
       controllerStore.setController(payload)
     }
 
-    watch(screenWidth, () => {
-      if (screenWidth.value <= 540)
-        controllerStore.setController('mouse')
-      else
-        controllerStore.setController('keyboard')
-    })
+    const setController = (): void => {
+      if (
+        ls.get(LSKeys.GAME_CONTROLLER) === 'keyboard' ||
+        ls.get(LSKeys.GAME_CONTROLLER) === 'mouse'
+      ) {
+        const controller = ls.get(LSKeys.GAME_CONTROLLER)
+        controllerStore.setController(controller as Controller)
+      }
+    }
+
+    watch(screenWidth, setController)
 
     return {
       controller,
       screenWidth,
+      setController,
       switchController,
     }
   },
