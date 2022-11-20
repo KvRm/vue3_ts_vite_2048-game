@@ -1,21 +1,21 @@
 <template>
   <svg-icon
-      @click="switchTheme"
-      :name="`lightbulb`"
-      :width="40"
-      :height="40"
+    @click='switchTheme'
+    :name='`lightbulb`'
+    :width='40'
+    :height='40'
   />
 </template>
 
-<script lang="ts">
-import {defineComponent, onMounted} from "vue";
+<script lang='ts'>
+import { defineComponent, onMounted } from 'vue'
 import SvgIcon from '../components/SvgIcon.vue'
-import {LSKeys, useLocalStorage} from "../utils/localStorage";
+import { LSKeys, useLocalStorage } from '../utils/localStorage'
 
 export default defineComponent({
-  name: "ThemeSwitcher",
+  name: 'ThemeSwitcher',
   components: {
-    SvgIcon
+    SvgIcon,
   },
 
   setup() {
@@ -27,9 +27,9 @@ export default defineComponent({
     })
 
     const switchTheme = (): void => {
-      ls.get(LSKeys.THEME) === "light" ?
-          ls.set(LSKeys.THEME, "dark") :
-          ls.set(LSKeys.THEME, "light")
+      ls.get(LSKeys.THEME) === 'light' ?
+        ls.set(LSKeys.THEME, 'dark') :
+        ls.set(LSKeys.THEME, 'light')
       detectColorScheme()
     }
 
@@ -37,28 +37,28 @@ export default defineComponent({
       const ls = useLocalStorage()
 
       if (ls.get(LSKeys['THEME'])) {
-        ls.get(LSKeys['THEME']) === "dark" ?
-            setDataThemeAttribute("dark") :
-            setDataThemeAttribute("light")
-      } else if (window?.matchMedia("(prefers-color-scheme: light)").matches) {
-        ls.set(LSKeys['THEME'], "light")
-        setDataThemeAttribute("light")
+        ls.get(LSKeys['THEME']) === 'dark' ?
+          setDataThemeAttribute('dark') :
+          setDataThemeAttribute('light')
+      } else if (window?.matchMedia('(prefers-color-scheme: light)').matches) {
+        ls.set(LSKeys['THEME'], 'light')
+        setDataThemeAttribute('light')
         detectColorScheme()
       } else {
-        ls.set(LSKeys['THEME'], "dark")
-        setDataThemeAttribute("dark")
+        ls.set(LSKeys['THEME'], 'dark')
+        setDataThemeAttribute('dark')
         detectColorScheme()
       }
     }
 
-    const setDataThemeAttribute = (theme: "dark" | "light"): void => {
-      document.documentElement.setAttribute("data-theme", theme)
+    const setDataThemeAttribute = (theme: 'dark' | 'light'): void => {
+      document.documentElement.setAttribute('data-theme', theme)
     }
 
     return {
-      switchTheme
+      switchTheme,
     }
-  }
+  },
 })
 </script>
 

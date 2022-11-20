@@ -1,1 +1,1 @@
-export type Side = "up" | "right" | "down" | "left"
+export type Side = 'up' | 'right' | 'down' | 'left'

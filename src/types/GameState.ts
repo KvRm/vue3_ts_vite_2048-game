@@ -1,1 +1,1 @@
-export type GameState = "active" | "over"
+export type GameState = 'active' | 'over'

@@ -1,31 +1,31 @@
 <template>
-  <div class="header">
-    <h1 class="title">2048</h1>
-    <div class="score">
-      <span class="score-header">Current score: </span>
-      <p class="score-value">{{ currentScore }}</p>
+  <div class='header'>
+    <h1 class='title'>2048</h1>
+    <div class='score'>
+      <span class='score-header'>Current score: </span>
+      <p class='score-value'>{{ currentScore }}</p>
     </div>
-    <div class="score record">
-      <span class="score-header record-header">Record: </span>
-      <p class="score-value record-value">{{ recordScore }}</p>
+    <div class='score record'>
+      <span class='score-header record-header'>Record: </span>
+      <p class='score-value record-value'>{{ recordScore }}</p>
     </div>
-    <div class="controllers">
-      <svg-icon @click="setPrevStep" :name="`backward`" :height="26" :width="26"/>
-      <svg-icon @click="restartGame" :name="`rotate-right`" :height="26" :width="26"/>
+    <div class='controllers'>
+      <svg-icon @click='setPrevStep' :name='`backward`' :height='26' :width='26' />
+      <svg-icon @click='restartGame' :name='`rotate-right`' :height='26' :width='26' />
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script lang='ts'>
 
-import {computed, defineComponent, onMounted} from "vue"
-import SvgIcon from "./SvgIcon.vue"
-import {useCellsStore, useGameStateStore, useScoreStore} from "../stores"
-import {LSKeys, useLocalStorage} from "../utils/localStorage";
+import { computed, defineComponent, onMounted } from 'vue'
+import SvgIcon from './SvgIcon.vue'
+import { useCellsStore, useGameStateStore, useScoreStore } from '../stores'
+import { LSKeys, useLocalStorage } from '../utils/localStorage'
 
 export default defineComponent({
   components: {
-    SvgIcon
+    SvgIcon,
   },
 
   setup() {
@@ -52,25 +52,25 @@ export default defineComponent({
 
     const restartGame = (): void => {
       cellsStore.setStarterCells()
-      gameStateStore.setGameState("active")
+      gameStateStore.setGameState('active')
     }
 
     const setPrevStep = (): void => {
       cellsStore.setPrevCells()
-      gameStateStore.setGameState("active")
+      gameStateStore.setGameState('active')
     }
 
     return {
       currentScore,
       recordScore,
       restartGame,
-      setPrevStep
+      setPrevStep,
     }
-  }
+  },
 })
 </script>
 
-<style lang="scss">
+<style lang='scss'>
 .header {
   display: flex;
   justify-content: space-between;

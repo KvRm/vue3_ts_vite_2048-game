@@ -1,1 +1,1 @@
-export type Controller = "keyboard" | "mouse"
+export type Controller = 'keyboard' | 'mouse'

@@ -1,19 +1,19 @@
 <template>
-  <span class="icon-container" :class="{'active': active}">
+  <span class='icon-container' :class="{'active': active}">
     <font-awesome-icon
-        :icon="`fa-solid fa-${name}`"
-        class="icon"
-        :style="{
+      :icon='`fa-solid fa-${name}`'
+      class='icon'
+      :style='{
           width,
           height
-        }"
+        }'
     />
   </span>
 </template>
+  
+<script lang='ts'>
 
-<script lang="ts">
-
-import {defineComponent} from "vue";
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'SvgIcon',
@@ -21,24 +21,24 @@ export default defineComponent({
   props: {
     name: {
       type: String,
-      required: true
+      required: true,
     },
     width: {
       type: Number,
-      required: true
+      required: true,
     },
     height: {
       type: Number,
-      required: true
+      required: true,
     },
     active: {
-      type: Boolean
-    }
-  }
+      type: Boolean,
+    },
+  },
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .icon-container {
   display: inline-flex;
   position: relative;

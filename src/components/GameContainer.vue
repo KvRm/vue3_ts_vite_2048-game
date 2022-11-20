@@ -1,22 +1,22 @@
 <template>
-  <div class="game">
-    <game-header/>
-    <component :is="gameComponent"/>
-    <game-controller/>
+  <div class='game'>
+    <game-header />
+    <component :is='gameComponent' />
+    <game-controller />
   </div>
 </template>
 
-<script lang="ts">
+<script lang='ts'>
 
-import {computed, defineComponent, onMounted} from "vue";
-import GameHeader from "./GameHeader.vue"
-import GamePlayground from "./GamePlayground.vue"
-import GameController from "./GameController.vue"
-import GameOver from "./GameOver.vue";
-import SvgIcon from "./SvgIcon.vue";
-import {useGameStateStore} from "../stores";
-import {LSKeys, useLocalStorage} from "../utils/localStorage";
-import {GameState} from "../types";
+import { computed, defineComponent, onMounted } from 'vue'
+import GameHeader from './GameHeader.vue'
+import GamePlayground from './GamePlayground.vue'
+import GameController from './GameController.vue'
+import GameOver from './GameOver.vue'
+import SvgIcon from './SvgIcon.vue'
+import { useGameStateStore } from '../stores'
+import { LSKeys, useLocalStorage } from '../utils/localStorage'
+import { GameState } from '../types'
 
 export default defineComponent({
   components: {
@@ -24,7 +24,7 @@ export default defineComponent({
     GameHeader,
     GamePlayground,
     GameController,
-    GameOver
+    GameOver,
   },
 
   setup() {
@@ -33,15 +33,15 @@ export default defineComponent({
 
     const gameState = computed<GameState>(() => gameStateStore.getGameState)
     const gameComponent = computed<typeof GamePlayground | typeof GameOver>(() => {
-      if (gameState.value === "over")
+      if (gameState.value === 'over')
         return GameOver
       return GamePlayground
     })
 
     onMounted(() => {
       if (
-          ls.get(LSKeys.GAME_STATE) === "active" ||
-          ls.get(LSKeys.GAME_STATE) === "over"
+        ls.get(LSKeys.GAME_STATE) === 'active' ||
+        ls.get(LSKeys.GAME_STATE) === 'over'
       ) {
         const gameState = ls.get(LSKeys.GAME_STATE)
         gameStateStore.setGameState(gameState as GameState)
@@ -50,13 +50,13 @@ export default defineComponent({
 
     return {
       gameState,
-      gameComponent
+      gameComponent,
     }
-  }
+  },
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .game {
   max-width: 484px;
   margin: 3rem auto;

@@ -1,35 +1,35 @@
 <template>
-  <div class="game-over" ref="playgroundRef">
+  <div class='game-over' ref='playgroundRef'>
     <number-component
-        v-for="(cell, index) in playgroundCells"
-        :key="index"
-        :value="cell"
+      v-for='(cell, index) in playgroundCells'
+      :key='index'
+      :value='cell'
     />
   </div>
 </template>
 
-<script lang="ts">
+<script lang='ts'>
 
-import {computed, defineComponent, onMounted, onUnmounted, ref} from "vue";
-import NumberComponent from "./NumberComponent.vue";
-import {swipe} from "../utils/actionsListeners/swipeListener";
-import {LSKeys, useLocalStorage} from "../utils/localStorage";
-import {useCellsStore} from "../stores";
+import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
+import NumberComponent from './NumberComponent.vue'
+import { swipe } from '../utils/actionsListeners/swipeListener'
+import { LSKeys, useLocalStorage } from '../utils/localStorage'
+import { useCellsStore } from '../stores'
 
 export default defineComponent({
   components: {
-    NumberComponent
+    NumberComponent,
   },
 
   setup() {
     const ls = useLocalStorage()
     const cellsStore = useCellsStore()
-  
+
     const playgroundRef = ref<HTMLCanvasElement | null>(null)
 
     const cells = computed<number[][]>(() => cellsStore.getCells)
     const playgroundCells = computed<number[]>(() =>
-        cells.value.reduce((c, res) => [...c, ...res], []))
+      cells.value.reduce((c, res) => [...c, ...res], []))
 
     onMounted(() => {
       if (ls.get(LSKeys.CELLS)) {
@@ -38,23 +38,23 @@ export default defineComponent({
         cellsStore.setStarterCells()
       }
 
-      playgroundRef.value?.addEventListener("mousedown", (e: MouseEvent) =>
-          swipe(e, playgroundRef.value as HTMLCanvasElement)
+      playgroundRef.value?.addEventListener('mousedown', (e: MouseEvent) =>
+        swipe(e, playgroundRef.value as HTMLCanvasElement),
       )
-      playgroundRef.value?.addEventListener("touchstart", (e: TouchEvent) =>
-          swipe(e, playgroundRef.value as HTMLCanvasElement)
+      playgroundRef.value?.addEventListener('touchstart', (e: TouchEvent) =>
+        swipe(e, playgroundRef.value as HTMLCanvasElement),
       )
-      window.addEventListener("keydown", (e: KeyboardEvent) =>
-          swipe(e, playgroundRef.value as HTMLCanvasElement)
+      window.addEventListener('keydown', (e: KeyboardEvent) =>
+        swipe(e, playgroundRef.value as HTMLCanvasElement),
       )
 
-      playgroundRef.value?.addEventListener("dragstart", () => false)
+      playgroundRef.value?.addEventListener('dragstart', () => false)
     })
 
     onUnmounted(() => {
-      playgroundRef.value?.removeEventListener("mousedown", () => swipe, false)
-      playgroundRef.value?.removeEventListener("touchstart", () => swipe, false)
-      playgroundRef.value?.removeEventListener("dragstart", () => false, false)
+      playgroundRef.value?.removeEventListener('mousedown', () => swipe, false)
+      playgroundRef.value?.removeEventListener('touchstart', () => swipe, false)
+      playgroundRef.value?.removeEventListener('dragstart', () => false, false)
     })
 
     return {
@@ -66,7 +66,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss">
+<style lang='scss'>
 .game-over {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
