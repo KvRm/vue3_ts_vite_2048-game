@@ -1,23 +1,23 @@
 <template>
-  <div class="number-container">
+  <div class='number-container'>
     <div
-        class="number"
-        :class="color"
+      class='number'
+      :class='color'
     >
       {{ number }}
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import {computed, defineComponent} from "vue";
+<script lang='ts'>
+import { computed, defineComponent } from 'vue'
 
 export default defineComponent({
   props: {
     value: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
 
   setup(props) {
@@ -27,33 +27,33 @@ export default defineComponent({
     })
 
     const color = computed<string>(() => {
-      if (props.value === 2) return "first"
-      if (props.value === 4) return "second"
-      if (props.value === 8) return "third"
-      if (props.value === 16) return "fourth"
-      if (props.value === 32) return "fifth"
-      if (props.value === 64) return "sixth"
-      if (props.value === 128) return "seventh"
-      if (props.value === 256) return "eighth"
-      if (props.value === 512) return "ninth"
-      if (props.value === 1024) return "tenth"
-      if (props.value === 2048) return "eleventh"
-      if (props.value === 4096) return "twelfth"
-      if (props.value === 8192) return "thirteenth"
-      if (props.value === 16384) return "fourteenth"
-      if (props.value === 32768) return "fifteenth"
-      return "empty"
+      if (props.value === 2) return 'first'
+      if (props.value === 4) return 'second'
+      if (props.value === 8) return 'third'
+      if (props.value === 16) return 'fourth'
+      if (props.value === 32) return 'fifth'
+      if (props.value === 64) return 'sixth'
+      if (props.value === 128) return 'seventh'
+      if (props.value === 256) return 'eighth'
+      if (props.value === 512) return 'ninth'
+      if (props.value === 1024) return 'tenth'
+      if (props.value === 2048) return 'eleventh'
+      if (props.value === 4096) return 'twelfth'
+      if (props.value === 8192) return 'thirteenth'
+      if (props.value === 16384) return 'fourteenth'
+      if (props.value === 32768) return 'fifteenth'
+      return 'empty'
     })
 
     return {
       number,
-      color
+      color,
     }
-  }
+  },
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .number-container {
   display: grid;
   justify-content: center;
@@ -70,6 +70,7 @@ export default defineComponent({
   border-radius: 10px;
   font-size: 1.8rem;
   color: black;
+  font-weight: bold;
 }
 
 @media (max-width: 540px) {

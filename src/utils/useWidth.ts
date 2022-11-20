@@ -1,17 +1,10 @@
-import {CallbackFunctionVariadic} from "../types";
+import { Ref, ref } from 'vue'
 
-export const useWidth = () => {
-	const addListener = (cb: CallbackFunctionVariadic) => {
-		window.addEventListener('resize', () =>
-			cb(window.innerWidth)
-		)
-	}
+export const useWidth = (): Ref<number> => {
+  const screenWidth = ref<number>(window.innerWidth)
 
-	const removeListener = (cb: CallbackFunctionVariadic): void => {
-		window.removeEventListener('resize', () =>
-			cb(window.innerWidth)
-		)
-	}
+  window.addEventListener('resize', () =>
+    screenWidth.value = window.innerWidth)
 
-	return {addListener, removeListener}
+  return screenWidth
 }
