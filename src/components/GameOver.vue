@@ -1,12 +1,18 @@
 <template>
-  <div class='game-over-banner'>
-    <span class='game-over-banner__text'>Game Over</span>
-    <svg-icon @click='restartGame' :name='`rotate-right`' :height='80' :width='80' />
+  <div class="game-over-banner">
+    <span class="game-over-banner__text">Game Over</span>
+    <svg-icon
+      @click="restartGame"
+      :name="`rotate-right`"
+      :hover="false"
+      :transparent-hover="true"
+      :height="80"
+      :width="80"
+    />
   </div>
 </template>
 
-<script lang='ts'>
-
+<script lang="ts">
 import { defineComponent } from 'vue'
 import SvgIcon from './SvgIcon.vue'
 import { useCellsStore, useGameStateStore } from '../stores'
@@ -27,22 +33,32 @@ export default defineComponent({
 })
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 .game-over-banner {
   display: flex;
+  position: absolute;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 484px;
-  height: 484px;
-  background: var(--second-bg-color);
-  border: 2px solid var(--primary-font-color);
+  width: 480px;
+  height: 480px;
   border-radius: 10px;
   font-size: 60px;
   line-height: 50px;
 
+  &::before {
+    content: '';
+    position: absolute;
+    width: 480px;
+    height: 480px;
+    background-color: var(--second-bg-color);
+    opacity: 0.5;
+  }
+
   &__text {
+    position: relative;
     width: 100%;
+    color: var(--primary-font-color);
   }
 }
 

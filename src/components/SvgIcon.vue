@@ -1,21 +1,25 @@
 <template>
-  <span class='icon-container' :class="{
-    'active': active, 
-    'disabled': disabled
-  }">
+  <span
+    class="icon-container"
+    :class="{
+      active,
+      disabled,
+      hover: !disabled,
+      transparentHover,
+    }"
+  >
     <font-awesome-icon
-      :icon='`fa-solid fa-${name}`'
-      class='icon'
-      :style='{
-          width,
-          height
-        }'
+      :icon="`fa-solid fa-${name}`"
+      class="icon"
+      :style="{
+        width,
+        height,
+      }"
     />
   </span>
 </template>
 
-<script lang='ts'>
-
+<script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -40,11 +44,14 @@ export default defineComponent({
     disabled: {
       type: Boolean,
     },
+    transparentHover: {
+      type: Boolean,
+    },
   },
 })
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .icon-container {
   display: inline-flex;
   position: relative;
@@ -55,7 +62,9 @@ export default defineComponent({
     position: relative;
     z-index: 1000;
   }
+}
 
+.hover {
   &:hover::after {
     content: '';
     display: block;
@@ -67,6 +76,12 @@ export default defineComponent({
     height: 100%;
     width: 100%;
     z-index: 999;
+  }
+}
+
+.transparentHover {
+  &:hover::after {
+    opacity: 0.3;
   }
 }
 
