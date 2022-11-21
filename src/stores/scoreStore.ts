@@ -7,6 +7,7 @@ export const useScoreStore = defineStore('score', () => {
 
   const currentScore = ref<number>(0)
   const recordScore = ref<number>(0)
+  const prevScore = ref<number>(0)
   const getCurrentScore = computed<number>(() => currentScore.value)
   const getRecordScore = computed<number>(() => recordScore.value)
 
@@ -27,13 +28,16 @@ export const useScoreStore = defineStore('score', () => {
   }
 
   const increaseCurrentScore = (payload: number): void => {
-    currentScore.value += payload
-    ls.set(LSKeys.CURRENT_SCORE, JSON.stringify(currentScore.value))
+    prevScore.value = currentScore.value
+    setCurrentScore(currentScore.value + payload)
   }
 
   const resetCurrentScore = (): void => {
-    currentScore.value = 0
-    ls.set(LSKeys.CURRENT_SCORE, JSON.stringify(currentScore.value))
+    setCurrentScore(0)
+  }
+
+  const setPrevScore = (): void => {
+    setCurrentScore(prevScore.value)
   }
 
   return {
@@ -45,5 +49,6 @@ export const useScoreStore = defineStore('score', () => {
     setRecordScore,
     increaseCurrentScore,
     resetCurrentScore,
+    setPrevScore,
   }
 })
