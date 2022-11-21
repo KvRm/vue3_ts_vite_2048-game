@@ -37,6 +37,7 @@ export default defineComponent({
       } else {
         cellsStore.setStarterCells()
       }
+      cellsStore.setPrevCellsState(false)
 
       playgroundRef.value?.addEventListener('mousedown', (e: MouseEvent) =>
         swipe(e, playgroundRef.value as HTMLCanvasElement),

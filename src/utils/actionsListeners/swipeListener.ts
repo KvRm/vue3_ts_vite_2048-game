@@ -1,11 +1,11 @@
 import { useDetectedSide } from './useDetectedSide'
 import { Controller, Side } from '../../types'
-import { useGameControllerStore } from '../../stores'
+import { useControllerStore } from '../../stores'
 import { computed } from 'vue'
 import { makeMove } from '../actionsHandlers/makeMove'
 
 export const swipe = (e: MouseEvent | TouchEvent | KeyboardEvent, playground: HTMLCanvasElement) => {
-  const controllerStore = useGameControllerStore()
+  const controllerStore = useControllerStore()
   const controller = computed<Controller>(() => controllerStore.getController)
 
   if (controller.value === 'keyboard') {

@@ -1,5 +1,8 @@
 <template>
-  <span class='icon-container' :class="{'active': active}">
+  <span class='icon-container' :class="{
+    'active': active, 
+    'disabled': disabled
+  }">
     <font-awesome-icon
       :icon='`fa-solid fa-${name}`'
       class='icon'
@@ -10,7 +13,7 @@
     />
   </span>
 </template>
-  
+
 <script lang='ts'>
 
 import { defineComponent } from 'vue'
@@ -32,6 +35,9 @@ export default defineComponent({
       required: true,
     },
     active: {
+      type: Boolean,
+    },
+    disabled: {
       type: Boolean,
     },
   },
@@ -66,5 +72,9 @@ export default defineComponent({
 
 .active {
   background: var(--primary-bg-color);
+}
+
+.disabled {
+  opacity: 0.3;
 }
 </style>

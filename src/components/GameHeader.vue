@@ -10,8 +10,19 @@
       <p class='score-value record-value'>{{ recordScore }}</p>
     </div>
     <div class='controllers'>
-      <svg-icon @click='setPrevStep' :name='`backward`' :height='26' :width='26' />
-      <svg-icon @click='restartGame' :name='`rotate-right`' :height='26' :width='26' />
+      <svg-icon
+        @click='setPrevStep'
+        :disabled='!prevCellsState'
+        :name='`backward`'
+        :height='26'
+        :width='26'
+      />
+      <svg-icon
+        @click='restartGame'
+        :name='`rotate-right`'
+        :height='26'
+        :width='26'
+      />
     </div>
   </div>
 </template>
@@ -34,9 +45,10 @@ export default defineComponent({
     const gameStateStore = useGameStateStore()
     const scoreStore = useScoreStore()
 
+    const prevCellsState = computed<boolean>(() => cellsStore.getPrevCellsState)
     const currentScore = computed<number>(() => scoreStore.getCurrentScore)
     const recordScore = computed<number>(() => scoreStore.getRecordScore)
-
+    
     onMounted(() => {
       if (ls.get(LSKeys.CURRENT_SCORE)) {
         const score: string | null = ls.get(LSKeys.CURRENT_SCORE)
@@ -61,6 +73,7 @@ export default defineComponent({
     }
 
     return {
+      prevCellsState,
       currentScore,
       recordScore,
       restartGame,

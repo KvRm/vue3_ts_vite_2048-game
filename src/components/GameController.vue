@@ -22,7 +22,7 @@
 <script lang='ts'>
 import { computed, defineComponent, onMounted, watch } from 'vue'
 import SvgIcon from './SvgIcon.vue'
-import { useGameControllerStore } from '../stores'
+import { useControllerStore } from '../stores'
 import { Controller } from '../types'
 import { LSKeys, useLocalStorage } from '../utils/localStorage'
 import { useWidth } from '../utils/useWidth'
@@ -33,25 +33,22 @@ export default defineComponent({
   },
 
   setup() {
-    const controllerStore = useGameControllerStore()
+    const controllerStore = useControllerStore()
     const ls = useLocalStorage()
 
     const screenWidth = useWidth()
     const controller = computed<Controller>(() => controllerStore.controller)
 
-    onMounted(() => {
-        if (screenWidth.value <= 540)
-          controllerStore.setController('mouse')
-        else setController()
-      },
-    )
+    onMounted(() => setController())
 
     const switchController = (payload: Controller) => {
       controllerStore.setController(payload)
     }
 
     const setController = (): void => {
-      if (
+      if (screenWidth.value <= 540)
+        controllerStore.setController('mouse')
+      else if (
         ls.get(LSKeys.GAME_CONTROLLER) === 'keyboard' ||
         ls.get(LSKeys.GAME_CONTROLLER) === 'mouse'
       ) {
