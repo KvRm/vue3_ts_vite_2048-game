@@ -4,7 +4,7 @@ import { useControllerStore } from '../../stores'
 import { computed } from 'vue'
 import { makeMove } from '../actionsHandlers/makeMove'
 
-export const swipe = (e: MouseEvent | TouchEvent | KeyboardEvent, playground: HTMLCanvasElement) => {
+export const swipe = (e: MouseEvent | TouchEvent | KeyboardEvent, playground: HTMLDivElement) => {
   const controllerStore = useControllerStore()
   const controller = computed<Controller>(() => controllerStore.getController)
 

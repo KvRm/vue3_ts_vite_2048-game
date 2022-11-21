@@ -25,7 +25,7 @@ export default defineComponent({
     const cellsStore = useCellsStore()
     const gameStateStore = useGameStateStore()
 
-    const playgroundRef = ref<HTMLCanvasElement | null>(null)
+    const playgroundRef = ref<HTMLDivElement | null>(null)
 
     const cells = computed<number[][]>(() => cellsStore.getCells)
     const playgroundCells = computed<number[]>(() =>
@@ -48,13 +48,13 @@ export default defineComponent({
       cellsStore.setPrevCellsState(false)
 
       playgroundRef.value?.addEventListener('mousedown', (e: MouseEvent) =>
-        swipe(e, playgroundRef.value as HTMLCanvasElement),
+        swipe(e, playgroundRef.value as HTMLDivElement),
       )
       playgroundRef.value?.addEventListener('touchstart', (e: TouchEvent) =>
-        swipe(e, playgroundRef.value as HTMLCanvasElement),
+        swipe(e, playgroundRef.value as HTMLDivElement),
       )
       window.addEventListener('keydown', (e: KeyboardEvent) =>
-        swipe(e, playgroundRef.value as HTMLCanvasElement),
+        swipe(e, playgroundRef.value as HTMLDivElement),
       )
 
       playgroundRef.value?.addEventListener('dragstart', () => false)

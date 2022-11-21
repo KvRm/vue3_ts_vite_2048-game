@@ -23,10 +23,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted } from 'vue'
 import SvgIcon from './SvgIcon.vue'
 import { useCellsStore, useGameStateStore, useScoreStore } from '../stores'
 import { LSKeys, useLocalStorage } from '../utils/localStorage'
+import { GameState } from '../types'
 
 export default defineComponent({
   components: {
@@ -42,6 +43,7 @@ export default defineComponent({
     const prevCellsState = computed<boolean>(() => cellsStore.getPrevCellsState)
     const currentScore = computed<number>(() => scoreStore.getCurrentScore)
     const recordScore = computed<number>(() => scoreStore.getRecordScore)
+    const gameState = computed<GameState>(() => gameStateStore.getGameState)
 
     onMounted(() => {
       if (ls.get(LSKeys.CURRENT_SCORE)) {
@@ -52,7 +54,27 @@ export default defineComponent({
         const score: string | null = ls.get(LSKeys.RECORD_SCORE)
         if (Number(score)) scoreStore.setRecordScore(Number(score))
       }
+
+      window.addEventListener('keydown', (e: KeyboardEvent) => {
+        escapeHandle(e)
+        spaceHandle(e)
+      })
     })
+
+    onUnmounted(() =>
+      window.removeEventListener('keydown', (e: KeyboardEvent) => {
+        escapeHandle(e)
+        spaceHandle(e)
+      }),
+    )
+
+    const spaceHandle = (e: KeyboardEvent) => {
+      if (e.code === 'Space' && gameState.value === 'over') restartGame()
+    }
+
+    const escapeHandle = (e: KeyboardEvent) => {
+      if (e.code === 'Escape') setPrevStep()
+    }
 
     const restartGame = (): void => {
       cellsStore.setStarterCells()
