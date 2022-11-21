@@ -1,0 +1,1 @@
+import{d as e,_ as o,c as r,o as n}from"./index.8dc4afa6.js";const t=e({name:"Error404View",setup(){return{}}});function s(c,a,p,_,d,i){return n(),r("div",null,"404 Not Found")}const f=o(t,[["render",s]]);export{f as default};
